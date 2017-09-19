@@ -1,0 +1,106 @@
+{
+    "name": "Node Runner",
+    "folder": "nodeRunner",
+    "version": "1.0.0",
+    "logs": "on",
+    "minifyOutput": "on",
+    "toastr": "on",
+    "osStat": "on",
+    "logStats": "on",
+    "cache": "off",
+    "backups": "off",
+    "development": "on",
+    "console": "on",
+    "devBar": "on",
+    "traverse": "on",
+    "socketio": "on",
+    "timedTask": "on",
+    "tools": "on",
+    "debugBar": "on",
+    "traverseCMD": "cd..",
+    "theme": "dark",
+    "font": "Armata",
+    "cmd": "gulp",
+    "title": "Node Runner",
+    "sub": "Lightweight gulp task runner",
+    "port": 3400,
+    "env": "development",
+    "mode": "windows",
+    "compiler": "stylus",
+    "compilers": [
+        "stylus",
+        "scss",
+        "sass",
+        "less"
+    ],
+    "fontType": [
+        "Oxygen",
+        "Ubuntu",
+        "Raleway",
+        "Roboto",
+        "Armata",
+        "Quicksand",
+        "Cinzel",
+        "Voltaire"
+    ],
+    "nav": [
+        {
+            "title": "Dashboard",
+            "icon": "icon-gauge",
+            "href": ""
+        },
+        {
+            "title": "Edit",
+            "icon": "icon-wrench",
+            "href": "edit"
+        },
+        {
+            "title": "Create",
+            "icon": "icon-pencil",
+            "href": "create"
+        },
+        {
+            "title": "Delete",
+            "icon": "icon-recycle",
+            "href": "delete"
+        }
+    ],
+    "modeNav": [
+        "npm",
+        "gulp",
+        "grunt",
+        "bower",
+        "testing",
+        "settings"
+    ],
+    "project": "aaaaaa",
+    "projects": [
+        "aaaaaa",
+        "bbb"
+    ],
+    "taskTime": 30,
+    "cacheTiming": 90,
+    "projectSize": 12387,
+    "projectFiles": 5899,
+    "projectDirs": 839,
+    "nrSize": 917,
+    "nrFiles": 118,
+    "nrDirs": 28,
+    "nmSize": 4455,
+    "nmFiles": 2605,
+    "nmDirs": 489,
+    "uws": "complete",
+    "wait": "/waiting",
+    "waitTime": 6000,
+    "debugMode": "off",
+    "debugOS": {
+        "linux": "DEBUG=express:* node ./bin/nodeRunner",
+        "win32": "set DEBUG=express:* & node ./bin/nodeRunner",
+        "off": "node ./bin/nodeRunner"
+    },
+    "templates": [
+        "bower.json",
+        "package.json",
+        ".gitignore"
+    ]
+}

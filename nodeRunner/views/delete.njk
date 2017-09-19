@@ -1,0 +1,31 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+<h3 class="center">{{title}}</h3>
+<div class="row fadeIn">
+{# each card for item to be deleted #}
+{% for task in config %}
+<div class="col s12 m6 l3">
+	<div class="card-panel center shrink">
+		<h4>{{task.title}}</h4>
+		<button class="btn tsk-btn" value="{{task.title}}" onclick="document.getElementById('Choice').value = this.value">Select task</button>
+	</div>
+</div>
+{% endfor %}
+</div>
+{# selection input #}
+<form id="update" role="form" action="/update" method="post">
+{{ macro.input(i="Choice",c="center",x="required") }}
+{{ macro.input(i="Result",c="hidden",x="readonly") }}
+</form>
+{# submit to server #}
+{%if config|length === 1 %}<p class="center fail">Cannot delete the last task in a group</p>{% endif %}
+<button type="submit" onclick="Delete()" class="btn tsk-btn{%if config|length === 1 %} disable{% endif %}">Delete</button>
+
+{% endblock %}
+{%block scripts%}
+<script>
+{# json server dump #}
+var collection = {{config | dump | safe}};
+</script>
+{%endblock%}

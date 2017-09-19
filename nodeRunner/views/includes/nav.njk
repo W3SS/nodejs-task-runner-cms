@@ -1,0 +1,30 @@
+{# nav - edit in config.json #}
+<div class='sidebar'>
+  <div class='title' onclick="hideNvLnk('nav-groupA')">Tasks</div>
+  <div id="nav-groupA" class="">
+    <ul class='nav'>
+  	{%- for item in data.nav -%}
+  		<li><a href="/{{item.href}}" class="{{item.icon}}">{{item.title}}</a></li>
+  	{%- endfor -%}
+    </ul>
+  </div>
+	<div class='title' onclick="hideNvLnk('nav-groupB')">Task Groups</div>
+  <div id="nav-groupB" class="hidden">
+    <ul class='nav'>
+  	{%- for item in data.modeNav -%}
+  		<li><a class="icon-code{%- if item  === data.cmd %} success{%- endif -%}" onclick="document.getElementById('modTask').value = '{{item}}',sbmt('submitCMD')">{{item | capitalize}}</a></li>
+  	{%- endfor -%}
+      <li><a href="/group" class="icon-cog">Group settings</a></li>
+    </ul>
+  </div>
+  <div class='title' onclick="hideNvLnk('nav-groupC')">Options</div>
+  <div id="nav-groupC" class="hidden">
+    <ul class='nav'>
+		{{ macro.navLink(n="settings",i="cog-alt") }}
+		{%- if (data.logStats  === "on") or (data.osStat === "on") -%}
+		{{ macro.navLink(n="status",i="tasks") }}
+		{%- endif -%}
+    {{ macro.navLink(n="tools",i="cog-alt") }}
+    </ul>
+  </div>
+</div>

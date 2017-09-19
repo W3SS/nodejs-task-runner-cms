@@ -1,0 +1,102 @@
+#!/usr/bin/env node
+const data = require('../nodeRunner/config/data.json'),
+os = require('os'),
+app = require('../nodeRunner'),
+debug = require('debug')('http'),
+http = require('http'),
+chalk = require('chalk');
+
+var port = normalizePort(process.env.PORT || data.port);
+app.set('port', port);
+
+var server = http.createServer(app);
+
+if ( data.socketio === 'on' ) {
+var  io = require('socket.io')(server, {
+    //path: '/test',
+    //serveClient: false,
+    // below are engine.IO options
+    pingInterval: 1000,
+    pingTimeout: 5000,
+    cookie: false
+  });
+}
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : '[port:' + addr.port+']';
+  console.log(chalk.magentaBright('Server listening on ') + chalk.yellowBright.bold(bind));
+  console.log(chalk.yellowBright('Navigate to ') + chalk.greenBright.bold('http://localhost:'+addr.port));
+  console.log(chalk.yellowBright('[CWD]'),chalk.greenBright.bold( process.cwd()));
+}
+
+if ( data.socketio === 'on' ) {
+  io.on('connection', function (socket) {
+    console.log(chalk.cyanBright('[socket.io]'),chalk.greenBright('connected'));
+    setInterval(function(){
+      socket.emit('freemem', os.freemem())
+            .emit('processmem', process.memoryUsage())
+            .emit('uptime', process.uptime())
+            .emit('cpuUsage', process.cpuUsage());
+    }, 3000);
+  });
+}

@@ -1,0 +1,9 @@
+{
+  "compress":"This action will take a while, do not restart your server while this is in progress.",
+  "backup":"Backup complete",
+  "stats":"statistics updated",
+  "logs":"'logs updated'",
+  "nodeRunner":"",
+  "dummy":"silence is golden"
+
+}

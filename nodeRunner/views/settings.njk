@@ -1,0 +1,187 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+<div id="app">
+	<h3 class="center mb20">{{title}}</h3>
+	{#Theme#}
+	<h4 class="center mt80">Theme</h4>
+	<div class="row fadeIn">
+	<form role="form" action="/theme" name="theme" method="post">
+	<div class="col s12 m6">
+		<div class="card-panel center shrink">
+			<h4>dark</h4>
+			{%- if data.theme !== "dark" %}<h6>Enable dark theme</h6>{%- else -%}<h6>dark theme enabled</h6>{%- endif -%}
+		  <button type="submit" class="btn tsk-btn{%- if data.theme === "dark" %} disable{%- endif -%}" onclick="document.getElementById('themeOps').value = 'dark'">{%- if data.theme === "dark" %}Current{%- else -%}Change{%- endif -%}</button>
+		</div>
+	</div>
+	<div class="col s12 m6">
+		<div class="card-panel center shrink">
+			<h4>light</h4>
+				{%- if data.theme !== "light" %}<h6>Enable light theme</h6>{%- else -%}<h6>light theme enabled</h6>{%- endif -%}
+			<button type="submit" class="btn tsk-btn{%- if data.theme === "light" %} disable{%- endif -%}" value="light" onclick="document.getElementById('themeOps').value = 'light'" >{%- if data.theme === "light" %}Current{%- else -%}Change{%- endif -%}</button>
+		</div>
+	</div>
+	{{ macro.input(i="themeOps",c="hidden") }}
+	</form>
+	</div>
+{#fonts choice#}
+<h4 class="center mt80">Fonts</h4>
+<div class="row fadeIn">
+	<form role="form" action="/fonts" name="fonts" method="post">
+		{%- for item in data.fontType -%}
+		<div class="col s12 m6 l3 mb20">
+			<div class="card-panel center shrink">
+				<h4>{{item}}</h4>
+				<small{%- if item === data.font %} class="success"{%- endif -%}>{%- if item === data.font %}Current{%- else -%}Enable {{item}} font{%- endif -%}</small>
+				<button type="button" class="btn tsk-btn{%- if item === data.font %} disable{%- endif -%}" onclick="document.getElementById(&quot;fontOps&quot;).value='{{item}}',submit()">{%- if item === data.font %}Active{%- else -%}Select{%- endif -%}</button>
+			</div>
+		</div>
+		{%- endfor -%}
+		{{ macro.input(i="fontOps",c="hidden") }}
+	</form>
+</div>
+
+{#css preprocessor#}
+<h4 class="center mt80">css preprocessor</h4>
+<div class="row fadeIn">
+	<form role="form" action="/compilers" name="compilers" method="post">
+		{%- for item in data.compilers -%}
+		<div class="col s12 m6 l3 mb20">
+			<div class="card-panel center shrink">
+				<h4>{{item}}</h4>
+				<small{%- if item === data.compiler %} class="success"{%- endif -%}>{%- if item === data.compiler %}Current{%- else -%}Enable {{item}} font{%- endif -%}</small>
+				<button type="button" class="btn tsk-btn{%- if item === data.compiler %} disable{%- endif -%}" onclick="document.getElementById(&quot;cssOps&quot;).value='{{item}}',submit()">{%- if item === data.compiler %}Active{%- else -%}Select{%- endif -%}</button>
+			</div>
+		</div>
+		{%- endfor -%}
+		{{ macro.input(i="cssOps",c="hidden") }}
+	</form>
+</div>
+
+	{#options posted to server#}
+	<h4 class="center mt80">Options</h4>
+	<div class="row">
+		<form role="form" action="/options" name="options" method="post">
+			{{ macro.option(t="Logs",info="Enable logging",i="logOps",d=data.logs) }}
+			{{ macro.option(t="Minify output",info="Enable minification of data output",i="minOps",d=data.minifyOutput) }}
+			{{ macro.option(t="Toastr",info="Enable display of toastr messages",i="toastOps",d=data.toastr) }}
+			{{ macro.option(t="OS Stats",info="Enable display of OS statistics",i="osOps",d=data.osStat) }}
+			{{ macro.option(t="Log Stats",info="Enable display of Log statistics",i="logStatsOps",d=data.logStats) }}
+			{{ macro.option(t="Cache Static",info="Enable cache of client side files",i="cacheOps",d=data.cache) }}
+			{{ macro.option(t="Development Mode",info="Enable app development mode",i="devOps",d=data.development) }}
+			{{ macro.option(t="Command Console",info="Enable the custom command console",i="consoleOps",d=data.console) }}
+			{{ macro.option(t="Auto Config backups",info="Enable automatic config file backups on change",i="backupsOps",d=data.backups) }}
+			{{ macro.option(t="Dev bar",info="Enable display of dev Bar",i="devBarOps",d=data.devBar) }}
+			{{ macro.option(t="Traverse",info="Enable traversing",i="traverseOps",d=data.traverse) }}
+			{{ macro.option(t="Socket.io",info="Enable Socket.io",i="socketioOps",d=data.socketio) }}
+			{{ macro.option(t="Timed Tasks",info="Enable timed tasks",i="timedTaskOps",d=data.timedTask) }}
+			{{ macro.buttonSub(t="Update") }}
+		</form>
+	</div>
+
+	<h4 class="center mt80">Server</h4>
+	<div class="row fadeIn">
+		{#port number posted to server#}
+	<form role="form" action="/port" name="port" method="post">
+		<div class="col s12 m6">
+			<h4 class="center">Port</h4>
+			<div class="card-panel center shrink">
+				<h4>Current Port Number:&nbsp;<span class="success">{{data.port}}</span></h4>
+				<input type="text" class="center" name="portOps" value="{{data.port}}" maxlength="9999" required>
+				<br>
+			  <button type="submit" class="btn tsk-btn">Change</button>
+			</div>
+		</div>
+	</form>
+	{#environment posted to server#}
+	<form role="form" action="/env" name="env" method="post">
+		<div class="col s12 m6">
+			<h4 class="center">Environment</h4>
+			<div class="card-panel center shrink">
+				<h4>Current env:&nbsp;<span class="success">{{data.env}}</span></h4>
+				<input type="text" class="center" name="envOps" value="{%- if data.env === 'production' %}development{%- else -%}production{%- endif -%}" readonly>
+				<br>
+			  <button type="submit" class="btn tsk-btn">Change</button>
+			</div>
+		</div>
+	</form>
+
+{#change auto task timings#}
+	<form role="form" action="/timedTasks" name="timedTasks" method="post">
+		<div class="col s12 m6">
+			<h4 class="center">Timed tasks</h4>
+			<div class="card-panel center shrink">
+				<h4>Current Timing:&nbsp;<span class="success">{{data.taskTime}}</span><small class="success">min</small></h4>
+				<input type="text" class="center" name="timingOps" value="{{data.taskTime}}" maxlength="9999" required>
+				<br>
+			  <button type="submit" class="btn tsk-btn">Change</button>
+			</div>
+		</div>
+	</form>
+	{#change client-side cache timings#}
+	<form role="form" action="/cacheTiming" name="cacheTiming" method="post">
+		<div class="col s12 m6">
+			<h4 class="center">Cache Timing</h4>
+			<div class="card-panel center shrink">
+				<h4>Current Timing:&nbsp;<span class="success">{{data.cacheTiming}}</span><small class="success">&nbsp;days</small></h4>
+				<input type="text" class="center" name="cacheTimingNum" value="{{data.cacheTiming}}" maxlength="9999" required>
+				<br>
+			  <button type="submit" class="btn tsk-btn">Change</button>
+			</div>
+		</div>
+	</form>
+	{#wait page timing#}
+	<form role="form" action="/waitTiming" name="waitTiming" method="post">
+		<div class="col s12 m6">
+			<h4 class="center">Redirect Timing</h4>
+			<div class="card-panel center shrink">
+				<h4>Current Timing:&nbsp;<span class="success">{{data.waitTime}}</span><small class="success">&nbsp;ms</small></h4>
+				<input type="text" class="center" name="waitTimingNum" value="{{data.waitTime}}" required>
+				<br>
+			  <button type="submit" class="btn tsk-btn">Change</button>
+			</div>
+		</div>
+	</form>
+{#nodemon delay restart timing#}
+	<form role="form" action="/delayTiming" name="delayTiming" method="post">
+		<div class="col s12 m6">
+			<h4 class="center">delayed restart Timing</h4>
+			<div class="card-panel center shrink">
+				<h4>Current Timing:&nbsp;<span class="success">{{nodemon.delay}}</span><small class="success">&nbsp;ms</small></h4>
+				<input type="text" class="center" name="delayTimingNum" value="{{nodemon.delay}}" required>
+				<br>
+			  <button type="submit" class="btn tsk-btn">Change</button>
+			</div>
+		</div>
+	</form>
+
+	<form role="form" action="/debugMode" name="debugMode" method="post">
+		<div class="col s12 m6">
+			<h4 class="center">Debug Mode</h4>
+			<div class="card-panel center shrink">
+				<h4>Current Mode:&nbsp;<span class="{%- if data.debugMode === 'on' -%}success{%- else -%}stamp{%- endif -%}">{{data.debugMode|upper}}</span><small class="success">&nbsp;{{stats.platform}}</small></h4>
+				<input type="text" class="center" name="debugModeVal" value="
+				{%- if data.debugMode === 'on' -%}
+					{{data.debugOS.off}}
+				{%- elif (data.debugMode === 'off') and (stats.platform === 'linux') -%}
+					{{data.debugOS.linux}}
+				{%- elif (data.debugMode === 'off') and (stats.platform === 'win32') -%}
+					{{data.debugOS.win32}}
+				{%- else -%}
+					{{data.debugOS.off}}
+				{%- endif -%}" readonly>
+				<br>
+			  <button type="submit" class="btn tsk-btn">Change</button>
+				<input type="text" class="center" name="debugModeOpt" value="
+				{%- if data.debugMode === 'off' -%}on{%- else -%}off{%- endif -%}"  hidden>
+			</div>
+		</div>
+	</form>
+
+
+
+	</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+<script src="/js/socket.io.js"></script>
+<script>
+setTimeout(function(){
+
+
+		var socket = io.connect('http://localhost:3400');
+
+		socket.on('freemem', function(data){
+			data = Math.round(data/1024/1024);
+			document.getElementById('freeMem').innerHTML = data;
+
+		});
+		socket.on('uptime', function(data){
+			data = Math.round(data);
+			document.getElementById('uptime').innerHTML = data;
+		});
+		socket.on('processmem', function(data){
+			rss = data.rss;
+			rss = Math.round(rss/1024/1024);
+			document.getElementById('nodeTotalMem').innerHTML = rss;
+		});
+		socket.on('cpuUsage', function(data){
+			data = data.user + data.system
+			//rss = data.rss;
+			data = Math.round(data/1024);
+			document.getElementById('nodeCpu').innerHTML = data;
+			//console.log(Math.round(data.user/1024));
+		});
+}, 1000);
+</script>

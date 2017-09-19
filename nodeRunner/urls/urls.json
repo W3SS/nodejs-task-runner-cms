@@ -1,0 +1,15 @@
+{
+    "data": "./nodeRunner/config/data.json",
+    "urls": "./nodeRunner/urls/urls.json",
+    "stat": "./nodeRunner/logs/statistics.json",
+    "tpl": "./nodeRunner/config/template.json",
+    "pkgJson":"./nodeRunner/logs/pkg.json",
+    "buildLog":"./nodeRunner/logs/build.json",
+    "backup": "./nodeRunner/backup/",
+    "dataDir": "./nodeRunner/data/",
+    "nodemon":"./nodemon.json",
+    "css":"./nodeRunner/public/css/",
+    "js":"./nodeRunner/public/js/",
+    "viewsDir": "views",
+    "publicDir": "public"
+}

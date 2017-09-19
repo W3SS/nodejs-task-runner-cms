@@ -1,0 +1,30 @@
+{
+  "name": "nodeRunner",
+  "version": "1.0.0",
+  "description": "nodeRunner",
+  "main": "nodeRunner.js",
+  "scripts": {
+    "start": "DEBUG=express:* & node ./bin/nodeRunner"
+  },
+  "author": "ben eaves",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "chalk": "^2.0.1",
+    "del": "^3.0.0",
+    "express": "^4.15.3",
+    "html-minifier": "^3.5.3",
+    "lodash": "^4.17.4",
+    "modclean": "^2.1.0",
+    "nunjucks": "^3.0.1",
+    "socket.io": "^2.0.3",
+    "tar-fs": "^1.15.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-babel-minify": "^0.2.0",
+    "gulp-jsonmin": "^1.1.0",
+    "gulp-uglify": "^3.0.0",
+    "require-dir": "^0.3.2"
+  },
+  "license": "ISC"
+}

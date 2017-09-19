@@ -1,0 +1,22 @@
+{
+    "delay": "300",
+    "restartable": "rs",
+    "ignore": [
+        ".git",
+        "node_modules/"
+    ],
+    "verbose": false,
+    "execMap": {
+        "js": "node ./bin/nodeRunner"
+    },
+    "watch": [
+        "nodeRunner/config/",
+        "nodeRunner/logs/",
+        "nodeRunner/views/",
+        "nodeRunner/backup/",
+        "nodeRunner/controllers/pages/",
+        "nodeRunner/data/",
+        "nodemon.json"
+    ],
+    "ext": "njk json gz css"
+}

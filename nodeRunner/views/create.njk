@@ -1,0 +1,32 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+{# create new #}
+<div id="app">
+<h3 class="center">{{title}}</h3>
+<form id="update" role="form" name="update" action="/update" method="post">
+<div class="row mb20 card p1 fadeIn">
+{# input fields #}
+<div class="col s12 m6">
+	{{ macro.inputField(t="Title",s="Must be unique to this task group. allowed special characters:",s2="@ # $ % ^  _ + = { }  [ ] ? , /",vm="Title") }}
+	{{ macro.inputField(t='Description',s='Restricted characters:',s2='" \\ ',vm='Description') }}
+	{{ macro.inputField(t='Command',s='Restricted characters:',s2='" \\ ',vm='Cmd') }}
+</div>
+<div class="col m6 s12">
+	{# binded outpud result #}
+	<pre id="pre1" class="w100 m20 vault-pre col m6 s12  p1">{
+"title":"${itemTitle}",
+"description":"${itemDescription}",
+"cmd":"${itemCmd}"
+}
+</pre>
+</div>
+</div>{# post result for server #}
+{{ macro.input(i="Result",c="hidden",x="readonly") }}
+{# submit button #}
+{{ macro.button(oc="updateitem()",t="Create") }}
+</form>
+{# json dump from server #}
+<pre id="pre4" class="hidden">{{config | dump}}</pre>
+</div>
+{% endblock %}

@@ -1,0 +1,232 @@
+{% extends "layout.njk" %}
+{%- if data.logStats === "on" -%}
+{%block headScripts%}
+{{ macro.js(s="Chart.min") }}
+{% endblock %}
+{%- endif -%}
+{% block content %}
+<h3 class="center">status</h3>
+{%- if data.osStat === "on" -%}
+<h3 class="center">OS</h3>
+<div class="row">
+	<div class="col s12 m6">
+	<h5>info</h5>
+		<div class="card p1 h250" style="color:white">
+			<h5>{{data.name}}:&nbsp;<span id="currentV" class="stamp">V{{data.version}}</span>&nbsp;<span id="currentInfo"></span></h5>
+			<h5>Latest:&nbsp;<span id="updateResult" class="stamp"></span></h5>
+			<h5>NodeJS:&nbsp;<span class="stamp">V{{stats.nodev.node}}</span>&nbsp;{%- if (stats.nodev.node | truncate(2)| replace(".","")) >= 6 -%}<span class="success">PASS</span>{%- else -%}<span class="fail">UNTESTED</span>{%- endif -%}</h5>
+			<h5>Session Uptime:&nbsp;<span id="uptime" class="stamp">{{(stats.uptime) | round}}</span><small class="stamp">s</small></h5>
+			<h5>Server env:&nbsp;<span class="stamp">{{data.env}}</span></h5>
+		</div>
+	</div>
+
+	<div class="col s12 m6">
+	<h5>Operating  system</h5>
+		<div class="card p1 h250" style="color:white">
+			<h5>Hostname:&nbsp;<span class="stamp">{{stats.hostname}}</span></h5>
+			<h5>Platform:&nbsp;<span class="stamp">{{stats.platform}}</span>&nbsp;{%- if (stats.platform === "linux") or (stats.platform === "win32")  -%}<span class="success">PASS</span>{%- else -%}<span class="fail">UNTESTED</span>{%- endif -%}</h5>
+			<h5>Architecture:&nbsp;<span class="stamp">{{stats.arch}}</span></h5>
+			<h5>Type:&nbsp;<span class="stamp">{{stats.ptype}}</span></h5>
+			<h5>Release:&nbsp;<span class="stamp">{{stats.prelease}}</span></h5>
+		</div>
+	</div>
+
+	<div class="col s12 m6">
+	<h5>Memory</h5>
+		<div class="card p1 h250" style="color:white">
+			<h5>OS Total memory:&nbsp;<span class="stamp">{{ (stats.totalmem/1024/1024) | round}}MB</span></h5>
+			<h5>OS Free memory:&nbsp;<span id="freeMem" class="stamp">{{ (stats.freemem/1024/1024) | round }}</span><small class="stamp">MB</small>&nbsp;{%- if stats.freemem/1024/1024  >= "500" -%}<span class="success">PASS</span>{%- else -%}<span class="fail">LOW MEMORY</span>{%- endif -%}</h5>
+			<h5>NodeJS Used memory:&nbsp;<span id="nodeTotalMem" class="stamp">{{ (stats.nodemem/1024/1024) | round }}</span><small class="stamp">MB</small></h5>
+		</div>
+	</div>
+
+	<div class="col s12 m6 l6">
+		<h5>CPU data</h5>
+		<div class="card p1 h250" style="color:white">
+			<h5>Model:&nbsp;<span class="stamp">{{stats.cpu[0].model}}</span></h5>
+			<h5>Speed:&nbsp;<span class="stamp">{{stats.cpu[0].speed}}<small class="stamp">MB</small></span></h5>
+			<h5>NodeJS Used:&nbsp;<span id="nodeCpu" class="stamp">{{ (stats.cpuUsage.user/1024) | round + (stats.cpuUsage.system/1024) | round }}</span><small class="stamp">KB</small></h5>
+
+		</div>
+	</div>
+
+	<div class="col s12 m6">
+	<h5>Working Dir</h5>
+		<div class="card p1 h250" style="color:white">
+			<h5>Dir:&nbsp;<span class="stamp">{{stats.cwd}}</span></h5>
+			<h5>Size:&nbsp;<span class="stamp">{{data.projectSize}}<small class="stamp">KB</small></span></h5>
+			<h5>Files:&nbsp;<span class="stamp">{{data.projectFiles}}</span></h5>
+			<h5>Folders:&nbsp;<span class="stamp">{{data.projectDirs}}</span></h5>
+		</div>
+	</div>
+
+	<div class="col s12 m6">
+	<h5>NodeRunner Dir</h5>
+		<div class="card p1 h250" style="color:white">
+			<h5>Dir:&nbsp;<span class="stamp">{{nRunner}}</span></h5>
+			<h5>Size:&nbsp;<span class="stamp">{{data.nrSize}}<small class="stamp">KB</small></span></h5>
+			<h5>Files:&nbsp;<span class="stamp">{{data.nrFiles}}</span></h5>
+			<h5>Folders:&nbsp;<span class="stamp">{{data.nrDirs}}</span></h5>
+		</div>
+	</div>
+
+</div>
+{%- endif -%}
+
+
+<h3 class="center">File Statistics</h3>
+<div id="" class="card p1 center" style="color:white">
+	<canvas id="chartjs-0" class="chartjs" width="770" height="385" style="display: block; width: 770px; height: 385px;"></canvas>
+</div>
+
+<h3 class="center">Task Statistics</h3>
+<div id="" class="card p1 center" style="color:white">
+	<canvas id="chartjs-1" class="chartjs" width="770" height="385" style="display: block; width: 770px; height: 385px;"></canvas>
+</div>
+
+{%- if data.logStats === "on"  -%}
+<h3 class="center">Logging Statistics</h3>
+<div id="historyChart" class="card p1 center" style="color:white">
+	<canvas id="chartjs-2" class="chartjs" width="770" height="385" style="display: block; width: 770px; height: 385px;"></canvas>
+</div>
+<div class="row">
+	<div class="col s12  m6">
+		<form role="form" action="/resetLogs" class="mb20" method="post">
+			<button class="btn w100 bs15 shrink">Reset statistics</button>
+		</form>
+	</div>
+	<div class="col s12  m6">
+		<form role="form" action="/backupLogs" class="mb20" method="post">
+			<button class="btn w100 bs15 shrink">Backup statistics</button>
+		</form>
+	</div>
+</div>
+<div id="tsts"></div>
+<div id="tsts2"></div>
+
+{%- endif -%}
+
+
+{% endblock %}
+
+
+
+{%block scripts%}
+{%- if data.socketio === "on" -%}
+<script src="/js/socket.io.js"></script>
+<script>
+
+		var socket = io.connect('http://localhost:3400');
+
+		socket.on('freemem', function(data){
+			data = Math.round(data/1024/1024);
+			document.getElementById('freeMem').innerHTML = data;
+
+		});
+		socket.on('uptime', function(data){
+			data = Math.round(data);
+			document.getElementById('uptime').innerHTML = data;
+		});
+		socket.on('processmem', function(data){
+			rss = data.rss;
+			rss = Math.round(rss/1024/1024);
+			document.getElementById('nodeTotalMem').innerHTML = rss;
+		});
+		socket.on('cpuUsage', function(data){
+			data = data.user + data.system
+			//rss = data.rss;
+			data = Math.round(data/1024);
+			document.getElementById('nodeCpu').innerHTML = data;
+			//console.log(Math.round(data.user/1024));
+		});
+</script>
+{%- endif -%}
+
+<script>
+{%- if data.logStats === "on" -%}
+var taskGroupNumbers = {{data.modeNav|length}};
+var projectNumbers = {{data.projects|length}};
+//get and filter JSON output returning only level
+var uniqueCount = [{%- set comma = joiner() -%}{%- for item in statistics -%}{{ comma() }}"{{item.level}}"{%- endfor -%}];
+var obj = {};
+
+uniqueCount.forEach(function(i) {
+    obj[i] = (obj[i] || 0) + 1;
+});
+
+var arr = Object.keys(obj).map(function(key) {
+    return obj[key];
+});
+
+//total history
+historyTotal();
+
+//create file chart
+new Chart(document.getElementById("chartjs-0"), {
+	"type": "bar",
+	"data": {
+		"labels": ["NodeRunner files", "NodeRunner folders", "NodeRunner size MB", "node_modules files/100", "node_modules folders/100", "node_modules size MB", "Total files/100", "Total folders/100", "Total size MB"],
+		"datasets": [{
+			"label": "nodeRunner",
+			"data": [{{data.nrFiles}}, {{data.nrDirs}}, {{data.nrSize/1024|round}}, {{data.nmFiles/100}}, {{data.nmDirs/100}}, {{data.nmSize/1024|round}}, {{data.projectFiles/100}}, {{data.projectDirs/100}}, {{data.projectSize/1024|round}}],
+			"fill": false,
+			"backgroundColor": ["rgba(3, 169, 244, 0.64)", "rgba(0, 245, 9, 0.61)", "rgba(255, 0, 0, 0.54)","rgba(3, 169, 244, 0.64)", "rgba(0, 245, 9, 0.61)", "rgba(255, 0, 0, 0.54)","rgba(3, 169, 244, 0.64)", "rgba(0, 245, 9, 0.61)", "rgba(255, 0, 0, 0.54)"],
+			"borderColor": "rgb(75, 192, 192)",
+			"lineTension": 0.1
+		}]
+	},
+	"options": {}
+});
+//create stats chart
+
+new Chart(document.getElementById("chartjs-1"), {
+	"type": "doughnut",
+	"data": {
+		"labels": ["Task Groups", "Projects"],
+		"datasets": [{
+			"label": "My First Dataset",
+			"data": [taskGroupNumbers, projectNumbers],
+			"backgroundColor": ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "rgb(255, 205, 86)"]
+		}]
+	}
+});
+
+//create history chart
+new Chart(document.getElementById("chartjs-2"), {
+    "type": "horizontalBar",
+    "data": {
+        "labels": ["info", "success", "fail"],
+        "datasets": [{
+            "label": ["Task History chart"],
+            "data": arr,
+            "fill": false,
+            "backgroundColor": ["rgba(3, 169, 244, 0.64)", "rgba(0, 245, 9, 0.61)", "rgba(255, 0, 0, 0.54)"],
+            "borderColor": ["rgb(3, 169, 244)", "rgb(9, 204, 34)", "rgb(216, 8, 8)"],
+            "borderWidth": 1
+        }]
+    },
+    "options": {
+        "scales": {
+            "xAxes": [{
+                "ticks": {
+                    "beginAtZero": true
+                },
+				"gridLines":{
+                    "color": "rgb(96, 125, 139)"
+                }
+            }],
+			"yAxes": [{
+				"gridLines":{
+                    "color": "rgb(96, 125, 139)"
+                }
+            }]
+        }
+    }
+});
+{%- endif -%}
+// get current cms version via get request
+checkUpdates();
+</script>
+
+
+{% endblock %}

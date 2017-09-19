@@ -1,0 +1,16 @@
+{# dashboard bottom-panel #}
+<div class="bottom-panel">
+    <div class="row">
+		<form action="/buildTask" method="post">
+			<div class="form-group">
+				<div class="input-field col s6">
+					{{ macro.input(i="buildTask",c="validate disable",x="required") }}
+					<label class="active">Task name</label>
+				</div>
+				<div class="input-field col s6 center">
+					<button type="submit" class="btn-flat btn-sbmt">Start task</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

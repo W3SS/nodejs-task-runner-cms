@@ -1,0 +1,97 @@
+{
+    "name": "Node Runner",
+    "version": "1.0.0",
+    "logs": "on",
+    "minifyOutput": "on",
+    "toastr": "on",
+    "osStat": "on",
+    "logStats": "on",
+    "cache": "off",
+    "backups": "on",
+    "development": "on",
+    "console": "on",
+    "devBar": "on",
+    "traverse": "on",
+    "socketio": "on",
+    "timedTask": "off",
+    "tools": "on",
+    "debugBar": "on",
+    "traverseCMD": "cd.. && cd ",
+    "theme": "dark",
+    "font": "Armata",
+    "cmd": "npm",
+    "title": "Node Runner",
+    "sub": "Lightweight gulp task runner",
+    "port": 3400,
+    "env": "development",
+    "mode": "windows",
+    "fontType": [
+        "Oxygen",
+        "Ubuntu",
+        "Raleway",
+        "Roboto",
+        "Armata",
+        "Quicksand",
+        "Cinzel",
+        "Voltaire"
+    ],
+    "nav": [
+        {
+            "title": "Dashboard",
+            "icon": "icon-gauge",
+            "href": ""
+        },
+        {
+            "title": "Edit",
+            "icon": "icon-wrench",
+            "href": "edit"
+        },
+        {
+            "title": "Create",
+            "icon": "icon-pencil",
+            "href": "create"
+        },
+        {
+            "title": "Delete",
+            "icon": "icon-recycle",
+            "href": "delete"
+        }
+    ],
+    "modeNav": [
+        "npm",
+        "gulp",
+        "grunt",
+        "bower",
+        "testing",
+        "tst",
+        "settings",
+        "set3"
+    ],
+    "project": "projectA",
+    "projects": [
+        "projectA",
+        "projectB",
+        "projectC",
+        "projectD",
+        "projectE"
+    ],
+    "taskTime": 30,
+    "cacheTiming": 90,
+    "projectSize": 81236,
+    "projectFiles": 29677,
+    "projectDirs": 2820,
+    "nrSize": 3475,
+    "nrFiles": 325,
+    "nrDirs": 64,
+    "nmSize": 33043,
+    "nmFiles": 11910,
+    "nmDirs": 1102,
+    "uws": "complete",
+    "wait": "/waiting",
+    "debugMode":"off",
+    "debugOS":{
+      "linux":"DEBUG=express:* node ./bin/nodeRunner",
+      "win32":"set DEBUG=express:* & node ./bin/nodeRunner",
+      "off":"node ./bin/nodeRunner"
+    }
+}

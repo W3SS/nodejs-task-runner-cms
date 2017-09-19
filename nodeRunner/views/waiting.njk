@@ -1,0 +1,18 @@
+{% extends "layout.njk" %}
+{#
+  -delay redirect while tasks being carried out then redirect to dash with all data updated once the server has been restarted
+  -delay times can be altered in public/js/app.min.js or on the settingspage
+  -this removes the need for middleware such as livereload or clicking reload page everytime changes are made
+#}
+{% block content %}{# page default is loader#}{% endblock %}
+{%block scripts%}
+<script>
+//delay  while tasks being carried out
+function waiting() {
+	setTimeout(function () {
+		location.href = '/';
+    //window.location="/";
+  },{{data.waitTime}});
+}
+</script>
+{% endblock %}

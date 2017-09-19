@@ -1,0 +1,38 @@
+<style>
+.debugBar{
+  position: fixed;
+  bottom: -40px;
+  height: 50px;
+  display: flex;
+  line-height: 50px;
+  padding: 0 20px;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+  z-index: 999999;
+  width: 94%;
+  left:3%;
+  background: rgba(0,0,0,.93);
+  box-shadow: 0 0 15px #000;
+      transition: 0.4s;
+}
+.debugBar:hover{
+  bottom: 0px;
+}
+.ib{
+    display: flex;
+    margin-left: 15px;
+    color: #757575;
+}
+small {
+  font-size: 10px;
+}
+</style>
+
+<div id="debugBar" class="debugBar">
+  <div class="ib">Platform:&nbsp;<span class="success">{{stats.platform}}</span></div>
+  <div class="ib">OS mem:&nbsp;<span class="success">{{ (stats.totalmem/1024/1024) | round }}</span><small>GB</small></div>
+  <div class="ib">Free mem:&nbsp;<span id="freeMem" class="success">{{ (stats.freemem/1024/1024) | round }}</span><small>GB</small></div>
+  <div class="ib">NodeJS UsedMem:&nbsp;<span id="nodeTotalMem" class="success">{{ (stats.nodemem/1024/1024) | round }}</span><small>MB</small></div>
+  <div class="ib">NodeJS UsedCPU:&nbsp;<span id="nodeCpu" class="success">{{ (stats.cpuUsage.user/1024) | round + (stats.cpuUsage.system/1024) | round }}</span><small>KB</small></div>
+  <div class="ib">Uptime:&nbsp;<span id="uptime" class="success">{{(stats.uptime) | round}}</span><small>s</small></div>
+</div>

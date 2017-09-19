@@ -1,0 +1,66 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+<div id="app">
+	<h3 class="center mb20">{{title}}</h3>
+	{#create task group#}
+	<h4 class="center">Create project</h4>
+	<form id="createGroup" role="form" action="/createProject" class="mb20" method="post">
+	<div class="row mb80 card p1 fadeIn">
+	{# panel for each item #}
+
+		<div class="col s12 m6">
+			<div class="input-field m20">
+				<input id="toAdd" type="text" class="form-control" onkeydown="tGroupVal()" v-model="name" debounce="500" required>
+				<div class="help-block">Name</div>
+			</div>
+		</div>
+	{# json binded data output #}
+	{%- set comma = joiner() -%}
+		<div class="col s12 m6">
+<pre id="pre1" class="w100 m20 vault-pre col m6 s12  p1">[
+{%- for item in data.projects -%}
+{{- comma() }}
+	"{{item}}"{%- endfor -%},
+	"${name}"
+]</pre>
+		</div>
+		<button id="tGroupBtn" onclick="postTaskgroup()" class="btn w100 bs15 shrink disable">Create</button>
+	</div>
+
+	{# data to be filtered and sent back to server #}
+	{{ macro.input(i="Result",c="hidden") }}
+	</form>
+
+	{#Task group#}
+	<h4 class="center mt80">Delete project</h4>
+	{# panel for each item #}
+	<div class="row fadeIn">
+	{%- for item in data.projects -%}
+	<div class="col s12 m6 l3">
+		<div class="card-panel center shrink">
+			<h4>{{item}}</h4>
+			{%- if data.projects|length < 2 -%}
+			<h6 class="fail">cannot delete last project</h6>
+			{%- else -%}
+			<button class="btn tsk-btn" value="{{item}}" onclick="removeDelVal(),document.getElementById('toDelete').value = this.value">Select group</button>
+			{%- endif -%}
+		</div>
+	</div>
+	{%- endfor -%}
+	</div>
+	{%- if data.projects|length >= 2 -%}
+	<div class="row fadeIn">
+		<div class="col s12">
+			<form id="deleteGroup" role="form" action="/deleteProject" method="post">
+				{# data to be filtered and sent back to server #}
+				{{ macro.input(i="toDelete",c="center",x="readonly") }}
+				{{ macro.buttonSub(i="toDeleteBtn",t="Delete",c="disable") }}
+			</form>
+		</div>
+	</div>
+	{%- endif -%}
+
+	
+</div>
+{% endblock %}

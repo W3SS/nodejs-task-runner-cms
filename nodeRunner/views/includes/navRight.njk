@@ -1,0 +1,19 @@
+{# nav - edit in config.json #}
+<div class='sidebar2'>
+    <div class='title' onclick="hideNvLnk('nav-groupD')">Projects</div>
+    <div id="nav-groupD" class="hidden">
+      <ul class='nav'>
+  	{%- for item in data.projects -%}
+  		<li><a class="icon-code{%- if item  === data.project %} success{%- endif -%}" onclick="document.getElementById('modProject').value = '{{item}}',sbmt('submitProject')">{{item}}</a></li>
+  	{%- endfor -%}
+    <li><a href="/project" class="icon-cog">Project settings</a></li>
+      </ul>
+    </div>
+    <div class='title' onclick="hideNvLnk('nav-groupE')">Template</div>
+    <div id="nav-groupE" class="hidden">
+      <ul class='nav'>
+        <li><a href="/templates" class="icon-code">Templates</a></li>
+        <li><a href="/editTpl" class="icon-cog">Edit</a></li>
+      </ul>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+<h3 class="center mb20">{{title}}</h3>
+{#add template#}
+<h4 class="center mt80">Add templated files to project {{data.project}}</h4>
+<div class="row fadeIn">
+	<form role="form" action="/createTpl" name="createTpl" method="post">
+		{%- for item in data.templates -%}
+		<div class="col s12 m6 l3 mb20">
+			<div class="card-panel center shrink">
+				<h4>{{item}}</h4>
+				<small class="success">Create a {{item}} file in project {{data.project}}</small>
+				<button type="button" class="btn tsk-btn" onclick="document.getElementById(&quot;title&quot;).value='{{item}}',submit()">create</button>
+			</div>
+		</div>
+		{%- endfor -%}
+		{{ macro.input(i="title",c="hidden") }}
+	</form>
+</div>
+{% endblock %}

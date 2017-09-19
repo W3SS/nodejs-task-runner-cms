@@ -1,0 +1,8 @@
+{
+	"default": 1,
+	"npm": 2,
+	"gulp": 3,
+	"grunt":4,
+	"bower":5,
+	"yarn":6
+}

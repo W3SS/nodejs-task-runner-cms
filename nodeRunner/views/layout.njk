@@ -1,0 +1,107 @@
+{% import "macros/macros.njk" as macro %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+	{# styles #}
+	{{ macro.css(s="styles") }}
+{%- if data.theme === "dark" -%}
+  {{ macro.css(s="dark.min") }}
+{%- endif -%}
+  {#scdript for head#}
+	{%block headScripts%}{% endblock %}
+  {#Change fonts#}
+  <style>body{font-family: '{{data.font}}', sans-serif!important}</style>
+</head>
+{#waiting === waiting page#}
+<body onload="{%- if waiting -%}waiting(){%- else -%}loader(){%- endif -%}{%- if (data.toastr === "off") or (waiting === true) -%}{%- else -%},toast(){% endif %}">
+<div id="loaderDiv"><div id="loader"></div></div>
+
+<div class='wrapper'>
+{# navigation #}
+{% include "includes/nav.njk" %}
+{%- if data.traverse === "on" -%}
+  {% include "includes/navRight.njk" %}
+{%- endif -%}
+  <div id="content">
+    <modal id="mdl{{title}}">
+      <h2>{{title}} info</h2>
+      <p>Modal box 1 working</p>
+      <button class="mdlButton" onclick="closeMdl('mdl{{title}}')">close</button>
+    </modal>
+    <a id="nav-button" type="button" onclick="toggleNav('nav-button','isOpen'){%- if data.devBar === 'on' %},showHideNav('devMenu'){%- endif -%}" href="#"><span></span></a>
+{%- if data.traverse === "on" -%}
+    <a id="nav-button2" type="button" onclick="toggleNav('nav-button2','isOpenRight'){%- if data.logs === 'on' %},showHideNav('logNav'){%- endif -%}" style="right: 50px;" href="#"><span></span></a>
+{%- endif -%}
+  {# main body block #}
+{% block content %}{% endblock %}
+  </div>
+  {%- if data.logs ===  "on" -%}
+	<div id="logNav" class="sidenav">
+	  <h5 class="center">Logs</h5>
+	  <button id="resetLogBtn" onclick="sbmt('resetLog')" class="icon-recycle" ></button>
+	  <div id="logForm">
+	  {%- for item in logger -%}
+	  <small class="{{item.level}}">{{item.level}}</small>&nbsp;<small class="comment">{{item.message | truncate(46)}}</small>&nbsp;<small class="stamp">[{{item.timestamp}}]</small><br>
+	  {%- endfor -%}
+	  </div>
+	</div>
+	{%- endif -%}
+</div>
+{%- if (data.toastr === "off") or (waiting === true) -%}{%- else -%}
+<div class="fadeInDown" id="toast">{{data.cmd}}</div>
+{%- endif -%}
+{% block footer %}{% endblock %}
+{#submit command#}
+
+<form id="submitCMD" role="form" action="/modTask" method="post">
+  {{ macro.input(i="modTask",c="hidden") }}
+</form>
+<form id="submitProject" role="form" action="/modProject" method="post">
+  {{ macro.input(i="modProject",c="hidden") }}
+</form>
+{#to top#}
+{{ macro.float(i="toTop",oc="topFunction()",ico="angle-up") }}
+{#cmd console#}
+{%- if data.console === "on" %}
+{{ macro.float(i="ConsoleCMDBtn",oc="showHide()",ico="code") }}
+{% include "includes/console.njk" %}
+{%- endif -%}
+
+
+{%- if data.devBar === "on" %}
+<div id="devMenu" class="devMenu">
+  {{ macro.devBar(t="development mode",op=data.development) }}
+  {{ macro.devBar(t="logs",op=data.logs) }}
+  {{ macro.devBar(t="backups",op=data.backups) }}
+  {{ macro.devBar(t="cache",op=data.cache) }}
+  {{ macro.devBar(t="OS Statistics",op=data.osStat) }}
+  {{ macro.devBar(t="toastr",op=data.toastr) }}
+  {{ macro.devBar(t="minify output",op=data.minifyOutput) }}
+</div>
+{%- endif -%}
+
+<button class="mdlButton" type="button" onclick="openMdl('mdl{{title}}')">Open Modal 1</button>
+
+{%- if (data.debugBar === "on") and (title !== "status") -%}
+  {% include "includes/debugBar.njk" %}
+{%- endif -%}
+
+{#reset logs to default state if logs enabled#}
+{%- if data.logs === "on" -%}
+<form id="resetLog" role="form" action="/clearLogs" name="clearLogs" method="post"></form>
+{%- endif -%}
+
+{# js #}
+{{ macro.js(s="vue") }}
+{{ macro.js(s="app.min") }}
+
+{%- if (data.debugBar === "on") and (title !== "status") -%}
+  {% include "includes/socketIO.njk" %}
+{%- endif -%}
+
+{# page scripts #}
+{%block scripts%}{% endblock %}
+</body>
+</html>

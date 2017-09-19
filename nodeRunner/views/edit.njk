@@ -1,0 +1,42 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+<div id="app">
+<h3 class="center">{{title}}</h3>
+<form id="update" role="form" action="/update" method="post">
+{# panel for each item #}
+{% for item in config %}
+<div class="row mb20 card p1 fadeIn">
+	<div class="col s12 m6">
+		<div class="input-field m20">
+			<input type="text" class="form-control" value="{{item.title}}" v-model="title{{item.title | urlencode | replace("%", "x")}}" debounce="500" required>
+			<div class="help-block">Title</div>
+		</div>
+
+		<div class="input-field m20">
+			<input type="text" class="form-control" value="{{item.description}}" v-model="description{{item.title | urlencode | replace("%", "x")}}" debounce="500" required>
+			<div class="help-block">Description</div>
+		</div>
+
+		<div class="input-field m20">
+			<input type="text" class="form-control" value="{{item.cmd}}" v-model="cmd{{item.title | urlencode | replace("%", "xx")}}{{item.description | length }}" debounce="500" required>
+			<div class="help-block">Command</div>
+		</div>
+	</div>
+{# json binded data output #}
+<div class="col s12 m6">
+	<pre id="pre1" class="w100 m20 vault-pre col m6 s12  p1">{
+	"title":"${title{{item.title | urlencode | replace("%", "x")}}}",
+	"description":"${description{{item.title | urlencode | replace("%", "x")}}}",
+	"cmd":"${cmd{{item.title | urlencode | replace("%", "xx")}}{{item.description | length }}}"
+},
+</pre>
+</div>
+</div>
+{% endfor %}{# data to be filtered and sent back to server #}
+<pre id="pre3" class="hidden">{%- for item in config -%}{"title":"${title{{item.title | urlencode | replace("%", "x")}}}","description":"${description{{item.title | urlencode | replace("%", "x")}}}","cmd":"${cmd{{item.title | urlencode | replace("%", "xx")}}{{item.description | length }}}"},{%- endfor -%}</pre>
+{{ macro.input(i="Result",c="hidden",x="readonly") }}
+</form>
+</div>{# submit to server #}
+{{ macro.button(oc="postUpdateList()",t="Update") }}
+{% endblock %}

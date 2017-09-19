@@ -1,0 +1,168 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+<style>
+.h100{height:100px}
+.h80{height:80px}
+.h160{height:160px}
+</style>
+<h3 class="center mb20">{{title}}</h3>
+<h5 class="center mb20">node_modules reduction</h5>
+
+<div class="row fadeIn">
+  {# node_modules statistics #}
+  <div class="col s12 m4">
+    <div class="card-panel center shrink h160">
+      <h4>Size</h4>
+      <h5 class="success">{{(data.nmSize)|round}}kb<h5>
+    </div>
+  </div>
+  <div class="col s12 m4">
+    <div class="card-panel center shrink h160">
+      <h4>Files</h4>
+      <h5 class="success">{{data.nmFiles}}<h5>
+    </div>
+  </div>
+  <div class="col s12 m4">
+    <div class="card-panel center shrink h160">
+      <h4>Dirs</h4>
+      <h5 class="success">{{data.nmDirs}}<h5>
+    </div>
+  </div>
+  {# update node_modules statistics #}
+  <form role="form" action="/refreshNm" name="refreshNm" method="post">
+    <div class="col s12">
+      <div class="card-panel center shrink h80">
+        <button type="submit" class="btn tsk-btn">Update</button>
+      </div>
+    </div>
+  </form>
+
+</div>
+<div class="row fadeIn">
+<form role="form" action="/bakSite" name="bakSite" method="post">
+  <div class="col s12">
+    <div class="card-panel center shrink h100">
+      <div class="col s12 m6">
+      <h5 class="fail">Here there be Dragons</h5>
+    </div>
+    <div class="col s12 m6">{# backup node_modules #}
+      <button class="btn" style="margin-top:8px">backup node_modules</button>
+    </div>
+  </div>
+  </div>
+</form>
+{# modclean node_modules #}
+  <form role="form" action="/cleanNm" name="cleanNm" method="post">
+    <div class="col s12 m6">
+      <div class="card-panel center shrink">
+        <h4>Clean modules</h4>
+        <h5 class="success">Remove un-needed files and folders<h5>
+        <button type="submit" class="btn tsk-btn">Start</button>
+      </div>
+    </div>
+  </form>
+
+{# build list of package.json files in node_modules #}
+  <form role="form" action="/buildNmList" name="buildNmList" method="post">
+    <div class="col s12 m6">
+      <div class="card-panel center shrink">
+        <h4>Build pkg.json list</h4>
+        <h5 class="success">Total: {{build.pkgNum}}<h5>
+        <button type="submit" class="btn tsk-btn">Start</button>
+      </div>
+    </div>
+  </form>
+{# edit list of package.json files in node_modules #}
+  <form role="form" action="/editNmList" name="editNmList" method="post">
+    <div class="col s12 m6">
+      <div class="card-panel center shrink">
+        <h4>Reduce pkg.json list</h4>
+        <h5 class="success">Remove un-needed entries from {{build.pkgNum}} files<h5>
+        <button type="submit" class="btn tsk-btn">Start</button>
+      </div>
+    </div>
+  </form>
+{# minify node_modules #}
+  <form role="form" action="/minNm" name="minNm" method="post">
+    <div class="col s12 m6">
+      <div class="card-panel center shrink">
+        <h4>Minify modules</h4>
+        <h5 class="success">minify {{data.nmFiles}} files<h5>
+        <button type="submit" class="btn tsk-btn">Start</button>
+      </div>
+    </div>
+  </form>
+
+  {# delete list of unwanted files and folders #}
+    <form role="form" action="/deleteNm" name="deleteNm" method="post">
+      <div class="col s12 m6">
+        <div class="card-panel center shrink">
+          <h4>Delete List</h4>
+          <h5 class="success">Delete custom listed unwanted files<h5>
+          <button type="submit" class="btn tsk-btn">Start</button>
+        </div>
+      </div>
+    </form>
+
+    {# remove list of devDependencies #}
+      <form role="form" action="/rmDepend" name="rmDepend" method="post">
+        <div class="col s12 m6">
+          <div class="card-panel center shrink">
+            <h4>Remove dependencies</h4>
+            <h5 class="success">remove devDependencies<h5>
+            <button type="submit" class="btn tsk-btn">Start</button>
+          </div>
+        </div>
+      </form>
+
+{# npm prune && npm ddp node_modules #}
+<form role="form" action="/prnNm" name="prnNm" method="post">
+  <div class="col s12 m6">
+    <div class="card-panel center shrink">
+      <h4>Prune and dedupe</h4>
+      <h5 class="success">run npm prune and npm ddp<h5>
+      <button type="submit" class="btn tsk-btn">Start</button>
+    </div>
+  </div>
+</form>
+
+</div>
+
+
+<h5 class="center mb20">Project</h5>
+<div class="row fadeIn">
+  {# node_modules statistics #}
+  <div class="col s12 m4">
+    <div class="card-panel center shrink h160">
+      <h4>Size</h4>
+      <h5 class="success">{{(data.projectSize)|round}}kb<h5>
+    </div>
+  </div>
+  <div class="col s12 m4">
+    <div class="card-panel center shrink h160">
+      <h4>Files</h4>
+      <h5 class="success">{{data.projectFiles}}<h5>
+    </div>
+  </div>
+  <div class="col s12 m4">
+    <div class="card-panel center shrink h160">
+      <h4>Dirs</h4>
+      <h5 class="success">{{data.projectDirs}}<h5>
+    </div>
+  </div>
+
+  <form role="form" action="/bakSite" name="bakSite" method="post">
+    <div class="col s12">
+      <div class="card-panel center shrink h100">
+        <div class="col s12 m6">
+          <h5 class="stamp">Backup project</h5>
+        </div>
+        <div class="col s12 m6">{# backup project node_modules #}
+          <button class="btn" style="margin-top:8px">start backup</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

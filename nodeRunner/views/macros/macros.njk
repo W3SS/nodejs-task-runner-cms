@@ -1,0 +1,49 @@
+{# css #}
+{%- macro css(s) -%}
+<link rel="stylesheet" href="/css/{{s}}.css">
+{%- endmacro -%}
+{# js #}
+{%- macro js(s) -%}
+<script src="js/{{s}}.js"></script>
+{%- endmacro -%}
+{%- macro input(i,c,x) -%}
+<input id="{{i}}" type="text" class="{{c}}" name="{{i}}" {{x}}>
+{%- endmacro -%}
+{%- macro button(oc,t) -%}
+<button type="submit" onclick="{{oc}}" class="btn tsk-btn">{{t}}</button>
+{%- endmacro -%}
+{%- macro buttonSub(i,t,c) -%}
+<button id="{{i}}" class="btn w100 bs15 shrink {{c}}">{{t}}</button>
+{%- endmacro -%}
+{%- macro inputField(t,vm,s,s2) -%}
+<div class="input-field m20 w100">
+	<input type="text" required class="form-control" v-model="item{{vm}}" debounce="500">
+	<div class="help-block">{{t}}</div>
+	<div class="help-block">{{s}}<code class="stamp">&nbsp;{{s2}}</code></div>
+</div>
+{%- endmacro -%}
+{%- macro navLink(n,i) -%}
+<li><a href="/{{n}}" class="icon-{{i}}">{{n | capitalize}}</a></li>
+{%- endmacro -%}
+{%- macro option(t,info,i,d) -%}
+<div class="col s12 m6 l3 mb20">
+	<div class="card-panel center shrink">
+		<h4>{{t}}</h4>
+		<small>{{info}}</small>
+		<button type="button" id="{{i}}Btn" class="btn tsk-btn" onclick="toggle(this),document.getElementById('{{i}}').value = this.innerHTML;">{{d}}</button>
+	</div>
+</div>
+<input id="{{i}}" class="hidden" name="{{i}}" value="{{d}}" >
+{%- endmacro -%}
+{%- macro float(i,oc,ico) -%}
+<div id="{{i}}" class="shrink floatBtn" onclick="{{oc}}">
+	<a class="icon-{{ico}}"></a>
+</div>
+{%- endmacro -%}
+
+{%- macro devBar(t,op) -%}
+<div class="devBlock">
+	<div class="devBlockTitle">{{t | capitalize}}</div>
+	<div class="devResult {{op}}">{{op}}</div>
+</div>
+{%- endmacro -%}
