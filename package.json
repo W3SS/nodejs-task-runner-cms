@@ -4,7 +4,7 @@
   "description": "nodeRunner",
   "main": "nodeRunner.js",
   "scripts": {
-    "start": "DEBUG=express:* & node ./bin/nodeRunner"
+    "start": "nodemon"
   },
   "author": "ben eaves",
   "dependencies": {
@@ -25,6 +25,5 @@
     "gulp-jsonmin": "^1.1.0",
     "gulp-uglify": "^3.0.0",
     "require-dir": "^0.3.2"
-  },
-  "license": "ISC"
+  }
 }
