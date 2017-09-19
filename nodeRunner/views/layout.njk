@@ -81,9 +81,9 @@
   {{ macro.devBar(t="minify output",op=data.minifyOutput) }}
 </div>
 {%- endif -%}
-
+{#
 <button class="mdlButton" type="button" onclick="openMdl('mdl{{title}}')">Open Modal 1</button>
-
+#}
 {%- if (data.debugBar === "on") and (title !== "status") -%}
   {% include "includes/debugBar.njk" %}
 {%- endif -%}
